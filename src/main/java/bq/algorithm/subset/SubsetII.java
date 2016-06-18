@@ -9,7 +9,7 @@ public class SubsetII {
 	public ArrayList<ArrayList<Integer>> subsetsWithDup(ArrayList<Integer> S) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
 
-        ArrayList<Integer> sortedList = new ArrayList<Integer>(s);
+        ArrayList<Integer> sortedList = new ArrayList<Integer>(S);
         Collections.sort(sortedList);
         
         ArrayList<Integer> path = new ArrayList<Integer>();
