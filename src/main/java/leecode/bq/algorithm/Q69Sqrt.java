@@ -56,6 +56,31 @@ public class Q69Sqrt {
         return j - 1;
     }
 
+    /**
+     * similar to solution 2, more meaningful version
+     *
+     * @param x
+     * @return
+     */
+    public int mySqrt3(int x) {
+        if (x < 2)
+            return x;
+
+        int left = 1;
+        int right = x;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // left is the first one > x
+            // right is the last one <=x
+            if(x / mid >= mid) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
+    }
+
     public static void main(String[] args) {
         Q69Sqrt q = new Q69Sqrt();
         System.out.println(q.mySqrt(2147395600));
