@@ -1,8 +1,6 @@
 package leecode.bq.java;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,6 +16,7 @@ public class HashSetUsage {
     public static void main(String[] args) {
         unionNIntersection();
         setToPrimitiveArray();
+        removeDuplicateList();
     }
 
     private static void unionNIntersection() {
@@ -44,5 +43,21 @@ public class HashSetUsage {
                 .toArray();
 
         System.out.println(IntStream.of(ints).boxed().collect(Collectors.toList()));
+    }
+
+    private static void removeDuplicateList() {
+        Set<List<Integer>> set = new HashSet<>();
+        set.add(Arrays.asList(1, 2, 3));
+        set.add(Arrays.asList(1, 2, 3));
+        set.add(Arrays.asList(1, 2, 3));
+        set.add(Arrays.asList(1, 2, 3));
+
+        List<Integer> l1 = new LinkedList<>();
+        l1.add(1);
+        l1.add(2);
+        l1.add(3);
+        set.add(l1);
+
+        System.out.println("remove duplicated List in a set: " + set.size()); // size == 1
     }
 }

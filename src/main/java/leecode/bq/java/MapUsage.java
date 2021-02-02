@@ -1,6 +1,7 @@
 package leecode.bq.java;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -14,6 +15,7 @@ public class MapUsage {
 
     public static void main(String[] args) {
         getOrDefault();
+        orderedMap();
     }
 
     private static void getOrDefault() {
@@ -27,5 +29,21 @@ public class MapUsage {
         for (int i = 0; i < 10; i++) {
             m1.put(i, m1.getOrDefault(i, 0) + i);
         }
+    }
+
+    private static void orderedMap() {
+        // HashMap is not ordered
+        // LinkedHashMap is ordered
+        Map<Integer, String> dict = new LinkedHashMap<>();
+        dict.put(1, "One");
+        dict.put(2, "Two");
+        dict.put(3, "Three");
+        dict.put(4, "Four");
+        dict.put(5, "Five");
+
+        for(Map.Entry<Integer, String> kv : dict.entrySet()) {
+            System.out.println(kv.getKey() + ":" + kv.getValue());
+        }
+
     }
 }
