@@ -12,6 +12,11 @@ import java.util.PriorityQueue;
 public class PriorityQueueUsage {
 
     public static void main(String[] args) {
+        withPrimitiveValue();
+        withObject();
+    }
+
+    private static void withPrimitiveValue() {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
 
         pq.offer(100);
@@ -24,8 +29,31 @@ public class PriorityQueueUsage {
             // 10 ==> 88 ==> 100
             System.out.println(pq.poll());
         }
+    }
 
+    private static void withObject() {
+        MyObject[] objs = {new MyObject("a", 8),
+                new MyObject("b", 6), new MyObject("c", 18)};
 
+        PriorityQueue<MyObject> pq = new PriorityQueue<>( (obj1, obj2) -> Integer.compare(obj1.value, obj2.value));
+        for(MyObject obj: objs) {
+            pq.offer(obj);
+        }
+
+        while (!pq.isEmpty()) {
+            MyObject ob = pq.poll();
+            System.out.println(ob.name + ":" + ob.value);
+        }
+    }
+
+    static class MyObject {
+        String name;
+        int value;
+
+        public MyObject(String name, int value) {
+            this.name = name;
+            this.value = value;
+        }
     }
 
 }
