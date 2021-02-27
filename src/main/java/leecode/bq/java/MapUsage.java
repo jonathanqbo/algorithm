@@ -79,4 +79,8 @@ public class MapUsage {
         System.out.println(pair.getKey());
         System.out.println(pair.getValue());
     }
+
+    private static void createMap() {
+        Map<Character, Character> map = Map.of('1', '1', '6', '9', '8', '8', '9', '6', '0', '0');
+    }
 }

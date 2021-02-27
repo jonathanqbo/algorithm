@@ -18,6 +18,13 @@ public class IntegerBasic {
         System.out.println(Math.round(8 / 3)); // won't work
         System.out.println(Math.round((double)8 / 3)); // works
 
+
+        // parse integer from String
+        // instead using valueOf(string), use parseInt(string)
+        // since valueOf() invoke parseInt() in java
+        Integer.parseInt("100"); // Good
+        Integer.valueOf("100"); // Bad
+
     }
 
 }
