@@ -25,6 +25,10 @@ public class IntegerBasic {
         Integer.parseInt("100"); // Good
         Integer.valueOf("100"); // Bad
 
+        // leading zero can be parsed
+        int leadingZero = Integer.parseInt("06"); // ==> 6
+        System.out.println(leadingZero);
+
     }
 
 }

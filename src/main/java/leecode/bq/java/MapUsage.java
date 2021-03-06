@@ -1,6 +1,7 @@
 package leecode.bq.java;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <b> </b>
@@ -15,6 +16,10 @@ public class MapUsage {
         getOrDefault();
         orderedMap();
         useMapEntryAsKeyValuePair();
+
+        Map<Integer, Integer> map = Map.of(1, 1, 2, 2, 3, 4);
+        Integer[] arr = new Integer[3];
+        map.keySet().toArray(arr);
     }
 
     private static void getOrDefault() {

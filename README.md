@@ -1,9 +1,10 @@
 QuickSelect:
-215
+215, 347
 
 Union-Find:
 200: based on array
 947: based on Map
+547
 
 Prefix Tree / Trie:
 425, 208*,
@@ -26,7 +27,7 @@ two events ([start time, end time]) [s1, e1) and [s2, e2) do not conflict if and
 731
 
 Red-Black Tree / TreeMap:
-528
+528, 1348 (subMap)
 
 Sum
 ================================
