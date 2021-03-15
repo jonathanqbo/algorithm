@@ -30,6 +30,13 @@ public class StringUsage {
         // substring with length (last index + 1), will return empty ""
         String emptySubStr = "hello".substring("hello".length());
         System.out.println("empty|" + emptySubStr + "|empty");
+
+
+        // create string from char[] by range
+        String str1 = new String("hello world".toCharArray(), 0, 5); // ==> hello
+        System.out.println(str1);
+        str1 = new String("hello world".toCharArray(), 6, 5); // ==> world
+        System.out.println(str1);
     }
 
 }

@@ -17,6 +17,7 @@ public class HashSetUsage {
         unionNIntersection();
         setToPrimitiveArray();
         removeDuplicateList();
+        addWithExistCheck();
     }
 
     private static void unionNIntersection() {
@@ -59,5 +60,18 @@ public class HashSetUsage {
         set.add(l1);
 
         System.out.println("remove duplicated List in a set: " + set.size()); // size == 1
+    }
+
+    private static void addWithExistCheck() {
+        Set<Integer> set = new HashSet<>();
+        // return true if not existed
+        if (set.add(1)) {
+            System.out.println("data not existed");
+        }
+
+        // return false if already existed
+        if (!set.add(1)) {
+            System.out.println("data already existed");
+        }
     }
 }
