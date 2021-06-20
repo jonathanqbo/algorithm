@@ -37,6 +37,15 @@ public class StringUsage {
         System.out.println(str1);
         str1 = new String("hello world".toCharArray(), 6, 5); // ==> world
         System.out.println(str1);
+
+        //
+        String x = "hello1";
+        String a = "hello";
+        String b = "hello";
+        System.out.println(a == b); // true
+        System.out.println( x == b + 1); // false, NOTE: for string build in runtime, it's created as new String() in heap
+        final String c = "hello";
+        System.out.println(x == c + 1); // true, NOTE: final means compiler know it in compile time, so c+1 also known in compile time
     }
 
 }

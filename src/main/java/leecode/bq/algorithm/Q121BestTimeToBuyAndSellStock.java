@@ -10,7 +10,10 @@ package leecode.bq.algorithm;
 public class Q121BestTimeToBuyAndSellStock {
 
     /**
-     * solution: kind of dynamic programming
+     * solution:
+     *
+     * for every element, we are calculating the difference between that element and the minimum of all the values before that element
+     * and we are updating the maximum profit if the difference thus found is greater than the current maximum profit
      *
      * Runtime: 1 ms, faster than 97.63% of Java online submissions for Best Time to Buy and Sell Stock.
      * Memory Usage: 51.8 MB, less than 5.11% of Java online submissions for Best Time to Buy and Sell Stock.
