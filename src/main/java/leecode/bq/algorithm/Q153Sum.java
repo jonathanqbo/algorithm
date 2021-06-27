@@ -5,6 +5,26 @@ import java.util.*;
 /**
  * <b> </b>
  *
+ * Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+ *
+ * Notice that the solution set must not contain duplicate triplets.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [-1,0,1,2,-1,-4]
+ * Output: [[-1,-1,2],[-1,0,1]]
+ * Example 2:
+ *
+ * Input: nums = []
+ * Output: []
+ * Example 3:
+ *
+ * Input: nums = [0]
+ * Output: []
+ *
+ *
  * @Author : jonathan.q.bo@gmail.com
  * @Since : V1.0
  * Created on 1/23/21 3:13 PM
@@ -12,133 +32,99 @@ import java.util.*;
 public class Q153Sum {
 
     /**
-     * solution 1: sort -> two sum by two pointers
-     *
-     * Runtime: 16 ms, faster than 97.55% of Java online submissions for 3Sum.
-     * Memory Usage: 43.2 MB, less than 54.23% of Java online submissions for 3Sum.
-     *
-     * @param nums
-     * @return
+     solution 2 (prefered): sort + two pointers
+
+     (since here needs find all combination, so not able to use binary search as in TwoSum II)
+
+     KEY: no needs to use Set to to avoid duplication
+     KEY: keep moving left pointer when found a result, and skip same num in twosum loop
+
+     NOTE: this solution is also good for 3sum closest etc.
+
      */
-    public List<List<Integer>> threeSum(int[] nums) {
-        Arrays.sort(nums);
+    class Solution {
 
-        List<List<Integer>> result = new LinkedList();
-        // key: only loop nums[i] <= 0
-        for (int i = 0; i < nums.length && nums[i] <= 0; i++) {
-            if (i == 0 || nums[i] != nums[i - 1]) {
-                // could have multiple two sum, pass result to save performance
-                twoSum(nums, i, result);
-            }
-        }
+        public List<List<Integer>> threeSum(int[] nums) {
+            int n = nums.length;
+            List<List<Integer>> result = new ArrayList<>();
 
-        return result;
-    }
+            Arrays.sort(nums);
 
-    private void twoSum(int[] nums, int i, List<List<Integer>> result) {
-        int left = i + 1, right = nums.length - 1;
-        int target = -nums[i];
-        while (left < right) {
-            if (nums[left] > target) {
-                return;
-            }
+            for (int i = 0; i < n; i++) {
+                int cur = nums[i];
+                // key: skip same num
+                if (i > 0 && cur == nums[i - 1]) {
+                    continue;
+                }
 
-            int sum = nums[right] + nums[left];
-            if (sum > target) {
-                right--;
-            } else if (sum < target) {
-                left++;
-            } else {
-                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
-                left++;
-                // key
-                while (left < right && nums[left] == nums[left - 1]) {
-                    left++;
+                // two pointers for twosum in sorted array
+                int need = -cur;
+                int left = i + 1, right = n - 1;
+                while (left < right) {
+                    if (nums[left] + nums[right] < need) {
+                        left++;
+                    } else if (nums[left] + nums[right] > need) {
+                        right--;
+                    } else {
+                        result.add(List.of(cur, nums[left], nums[right]));
+                        // key: skip same num
+                        while (left < n - 1 && nums[left] == nums[left + 1]) {
+                            left++;
+                        }
+                        left++;
+                    }
                 }
             }
+
+            return result;
         }
+
     }
 
     /**
-     * solution: sort -> two pointers by hashset
-     *
-     * Runtime: 198 ms, faster than 31.49% of Java online submissions for 3Sum.
-     * Memory Usage: 43.3 MB, less than 47.91% of Java online submissions for 3Sum.
-     *
-     * @param nums
-     * @return
+     solution 1 (o(n^2)): convert to two sums on each nums[i]
+
+     foreach nums[i]
+     if same num has been visited, continue
+     twosum on the arr[i+1:] : twosum(nums, i + 1, -nums[i])
+
+     Key: to avoid duplication, use Set<List<Integer>> and sort the List before adding to Set
+
+     Time complexity: O(N^2)
+     Space complexity: O(N)
+
      */
-    public List<List<Integer>> threeSum2(int[] nums) {
-        Arrays.sort(nums);
+    class Solution2 {
 
-        List<List<Integer>> result = new LinkedList();
-        for (int i = 0; i < nums.length && nums[i] <= 0; i++) {
-            if (i == 0 || nums[i] != nums[i - 1]) {
-                // could have multiple two sum, pass result to save performance
-                twoSum2(nums, i, result);
-            }
-        }
+        public List<List<Integer>> threeSum(int[] nums) {
+            Set<List<Integer>> result = new HashSet<>();
 
-        return result;
-    }
-
-    private void twoSum2(int[] nums, int i, List<List<Integer>> result) {
-        Set<Integer> set = new HashSet();
-        int left = i + 1;
-        int target = -nums[i];
-        while (left < nums.length) {
-            // check target - nums[left] first, then add nums[left] into set
-            // since it could be: target - nums[left]  == nums[left]
-            if (set.contains(target - nums[left])) {
-                result.add(Arrays.asList(nums[i], nums[left], target - nums[left]));
-                // left point to the last one that has same value
-                while (left < nums.length -1 && nums[left] == nums[left + 1]) {
-                    left++;
+            // key: avoid duplicate calculation
+            Set<Integer> dups = new HashSet<>();
+            for (int i = 0; i < nums.length - 2; i++) {
+                if (dups.add(nums[i])) {
+                    twoSum(nums, i, result);
                 }
             }
-            set.add(nums[left]);
 
-            left++;
+            return new ArrayList(result);
         }
-    }
 
-    /**
-     * solution 3: without sort
-     *
-     * Runtime: 309 ms, faster than 22.91% of Java online submissions for 3Sum.
-     * Memory Usage: 43.7 MB, less than 29.88% of Java online submissions for 3Sum.
-     *
-     * @param nums
-     * @return
-     */
-    public List<List<Integer>> threeSum3(int[] nums) {
-        Set<List<Integer>> result = new HashSet();
-        // adding this first level loop duplication check reduces timecost from 1413ms to 309ms
-        Set<Integer> dups = new HashSet();
-        for (int i = 0; i < nums.length; i++) {
-            if (dups.contains(nums[i])) {
-                continue;
+        private void twoSum(int[] nums, int i, Set<List<Integer>> result) {
+            int target = -nums[i];
+            Set<Integer> seen = new HashSet<>();
+            for (int j = i + 1; j < nums.length; j++) {
+                if (seen.contains(target - nums[j])) {
+                    List<Integer> triplet = Arrays.asList(nums[i], nums[j], target - nums[j]);
+                    Collections.sort(triplet);
+                    result.add(triplet);
+                }
+
+                seen.add(nums[j]);
             }
-
-            dups.add(nums[i]);
-            twoSum3(nums, i, result);
         }
 
-        return new ArrayList(result);
     }
 
-    private void twoSum3(int[] nums, int i, Set<List<Integer>> result) {
-        Set<Integer> set = new HashSet();
-        int target = -nums[i];
-        for (int j = i + 1; j < nums.length; j++) {
-            if (set.contains(target - nums[j])) {
-                // use set to remove the duplication of list. need to sort first.
-                List<Integer> triplet = Arrays.asList(nums[i], nums[j], target - nums[j]);
-                Collections.sort(triplet);
-                result.add(triplet);
-            }
-            set.add(nums[j]);
-        }
-    }
 
 }

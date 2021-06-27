@@ -5,6 +5,17 @@ import java.util.*;
 /**
  * <b> </b>
  *
+ * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+ *
+ * Example 1:
+ *
+ * Input: n = 3
+ * Output: ["((()))","(()())","(())()","()(())","()()()"]
+ * Example 2:
+ *
+ * Input: n = 1
+ * Output: ["()"]
+ *
  * @Author : jonathan.q.bo@gmail.com
  * @Since : V1.0
  * Created on 2/16/21 11:39 AM
@@ -12,69 +23,58 @@ import java.util.*;
 public class Q22GenerateParentheses {
 
     /**
-     * solution: treat as Tree, check each possible child node which can add "(" or add ")"
-     *
-     * Runtime: 1 ms, faster than 84.43% of Java online submissions for Generate Parentheses.
-     * Memory Usage: 39.2 MB, less than 63.69% of Java online submissions for Generate Parentheses.
-     *
-     * @param n
-     * @return
+
+     solution: dfs + backtracking
+
+     think like this:
+     ---------------
+     build final 2n length str one char by one char
+     in each index, it has two options, either "(" or ")"
+     if "(" amount < n, add "("
+     if ")" amount < "(" amount, add ")"
+
+     dfs(int n, List<String> result, StringBuilder comb, int i, int openAmount, int closeAmount, )
+     0) if comb.length() = 2n: add to result
+     1) if open bracket amount < n: dfs(str, n - 1, comb.append "("), comb.delete last
+     2) if close bracked amount < open bracket amount: dfs(str, n - 1, comb.append ")"), comb.delete last
+
+
+
+     (
+     ((           ()
+     (((      (()         ()(
+     (((( ((() (()( (())   ()((  ()()
+
      */
-    public List<String> generateParenthesis(int n) {
-        List<String> result = new LinkedList<>();
-        dfs("", 0, 0, n, result);
-        return result;
-    }
 
-    private void dfs(String cur, int openN, int closeN, int n, List<String> result) {
-        if (openN == closeN && closeN == n) {
-            result.add(cur);
-            return;
+    class Solution {
+
+        public List<String> generateParenthesis(int n) {
+            List<String> result = new ArrayList<>();
+            dfs(n, 0, 0, result, new StringBuilder());
+
+            return result;
         }
 
-        if (openN < n) {
-            dfs(cur + "(", openN + 1, closeN, n, result);
-        }
+        private void dfs(int n, int openBracket, int closeBracket, List<String> result, StringBuilder path) {
+            if (path.length() == 2 * n) {
+                result.add(path.toString());
+                return;
+            }
 
-        if (closeN < openN) {
-            dfs(cur + ")", openN, closeN + 1, n, result);
-        }
-    }
+            if (openBracket < n) {
+                path.append("(");
+                dfs(n, openBracket + 1, closeBracket, result, path);
+                path.deleteCharAt(path.length() - 1);
+            }
 
-
-
-    Map<Integer, List<String>> mem = new HashMap<>();
-
-    /**
-     * solution 2: treat () together.
-     *
-     * Runtime: 1 ms, faster than 84.43% of Java online submissions for Generate Parentheses.
-     * Memory Usage: 38.8 MB, less than 96.82% of Java online submissions for Generate Parentheses.
-     *
-     * @param n
-     * @return
-     */
-    public List<String> generateParenthesis2(int n) {
-        if (n == 0) {
-            return Arrays.asList("");
-        }
-
-        if (mem.containsKey(n)) {
-            return mem.get(n);
-        }
-
-        List<String> result = new LinkedList<>();
-        for (int i = 0; i < n; i++) {
-            for (String left: generateParenthesis(i)) {
-                for (String right: generateParenthesis(n - 1 - i)) {
-                    result.add(new StringBuilder().append("(").append(left).append(")").append(right).toString());
-                }
+            if (openBracket > closeBracket) {
+                path.append(")");
+                dfs(n, openBracket, closeBracket + 1, result, path);
+                path.deleteCharAt(path.length() - 1);
             }
         }
 
-        mem.put(n, result);
-
-        return result;
     }
 
 }
